@@ -1,6 +1,6 @@
 # BeagleConnect Zepto con MSPM0L1117
 
-Referencia de la variante con el MSPM0L1117SRHBR. Basado en variants.ods, en el esquematico zepto.kicad_sch (Rev Mark4, fecha 2026-02-15) y en los archivos de la placa en Zephyr.
+Referencia de la variante con el MSPM0L1117SRHBR. Basado en variants.ods, en el esquematico zepto.kicad_sch (Rev Mark4, fecha 2026-02-15) y en los archivos de la placa en Zephyr xd
 
 ## El MCU
 
@@ -145,23 +145,3 @@ Datos tomados del archivo beagleconnect_zepto.dts.
 | ADC | referencia VDD, 12 bits, canales de PA27, PA26, PA25, PA24, PA18, PA22, PA12, PA14, PA16 y PA17 |
 | RGB | no esta definido en el DTS, hay que agregarlo |
 
-El DTS marca el boton como activo en bajo, pero el esquematico lo conecta a +3V3, asi que es activo en alto y no muestra pull-down externo. Hay que verificarlo en la placa y habilitar el pull-down interno si hace falta.
-
-## Programacion
-
-- **SWD por J3** con un ST-Link. Conectar SWDIO, SWCLK, GND y NRST. OpenOCD trae el target ti/mspm0.cfg, necesita una version reciente. No esta probado en esta placa.
-- **Bootloader por UART.** Con PA18 en alto durante el reset el MCU entra al BSL, y se flashea por PA10 y PA11 con un adaptador USB-UART.
-- El board.cmake de Zephyr fuerza un XDS110, por eso west flash no sirve con ST-Link.
-
-## Notas sobre el ODS
-
-- PA23 en el ODS dice PA32 (INT), es un error de dedo.
-- PA21 en el ODS dice TIMA0_C0, el esquematico dice TIMG8_C0.
-- PA16 en el ODS no tiene funcion, el esquematico la usa como FCC_IN.
-
-## Fuentes
-
-- variants.ods y zepto.pdf (esquematico Rev Mark4) aportados por Pablo
-- Archivos de la placa en Zephyr, boards/beagle/beagleconnect_zepto
-- Hoja de datos TI SLASFC9 del MSPM0L1116 y MSPM0L1117
-- Configuracion target/ti/mspm0.cfg de OpenOCD
