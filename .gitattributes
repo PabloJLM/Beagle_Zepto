@@ -1,0 +1,3 @@
+# Excluir HTML generado (iBOM de KiCad) de las estadisticas de lenguajes de GitHub
+*.html linguist-detectable=false
+hardware/bom/ibom.html linguist-generated=true
