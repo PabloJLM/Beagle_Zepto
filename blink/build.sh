@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Compila esta app para la Zepto. Funciona desde cualquier carpeta.
 APP="$(cd "$(dirname "$0")" && pwd)"
 source ~/zephyrproject/.venv/bin/activate
 export ZEPHYR_BASE=~/zephyrproject/zephyr

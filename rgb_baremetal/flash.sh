@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Flashea build/rgb.elf a la Zepto con ST-Link + OpenOCD (reintenta si la conexion falla)
 cd "$(dirname "$0")"
 export PATH="$HOME/openocd-local/bin:$PATH"
 for i in 1 2 3 4 5 6; do

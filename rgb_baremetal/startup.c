@@ -25,7 +25,6 @@ void Default_Handler(void)
 	}
 }
 
-/* Handlers del nucleo; los que no se usan caen en Default_Handler */
 void NMI_Handler(void)       __attribute__((weak, alias("Default_Handler")));
 void HardFault_Handler(void) __attribute__((weak, alias("Default_Handler")));
 void SVC_Handler(void)       __attribute__((weak, alias("Default_Handler")));
@@ -34,14 +33,13 @@ void SysTick_Handler(void)   __attribute__((weak, alias("Default_Handler")));
 
 __attribute__((section(".isr_vector"), used))
 void (*const vector_table[])(void) = {
-	(void (*)(void))&_estack, /* SP inicial */
+	(void (*)(void))&_estack,
 	Reset_Handler,
 	NMI_Handler,
 	HardFault_Handler,
-	0, 0, 0, 0, 0, 0, 0,      /* reservados */
+	0, 0, 0, 0, 0, 0, 0,
 	SVC_Handler,
 	0, 0,
 	PendSV_Handler,
 	SysTick_Handler,
-	/* IRQ0..: no se usan interrupciones de perifericos */
 };

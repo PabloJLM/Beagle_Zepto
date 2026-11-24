@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Uso: ./new_app.sh nombre_app
 set -e
 cd "$(dirname "$0")"
 [ -n "$1" ] || { echo "uso: $0 nombre_app"; exit 1; }

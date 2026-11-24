@@ -1,46 +1,31 @@
-/*
- * Demo LED RGB (D3, WS2812 en PA15) con Zephyr.
- * Efecto: ROTACION DE COLORES continua (arcoiris).
- *
- * Zephyr no trae driver de WS2812 para MSPM0 (el de GPIO solo sirve para
- * Nordic), asi que los bits se mandan a mano con ensamblador. El pin se
- * configura con la API GPIO de Zephyr y los pulsos se generan escribiendo
- * directo a DOUTSET/DOUTCLR del puerto.
- *
- * Ajuste de tiempos para CPU a 32 MHz (1 ciclo = 31.25 ns), periodo 40 ciclos:
- *   bit 0: alto 11 ciclos (~340 ns)   bit 1: alto 22 ciclos (~690 ns)
- * Si los colores salen mal, ajustar T0H_NOPS / T1H_NOPS (ver comentarios).
- */
+/* LED RGB (WS2812 en PA15): rotacion continua de color. */
+
 #include <zephyr/kernel.h>
 #include <zephyr/drivers/gpio.h>
 
 static const struct gpio_dt_spec ws =
 	GPIO_DT_SPEC_GET(DT_PATH(zephyr_user), ws2812_gpios);
 
-/* Offsets de registros del GPIO MSPM0 */
 #define DOUTSET31_0 0x1290
-#define DOUTCLR_REL 0x10 /* DOUTCLR31_0 (0x12A0) - DOUTSET31_0 */
 
 #define NOPS(n) ".rept " #n "\nnop\n.endr\n"
 
-/* Manda 24 bits (formato GRB) al LED. Interrupciones deben estar apagadas. */
+/* Bit WS2812 a 32 MHz, periodo 40 ciclos: bit 0 = 11 ciclos en alto, bit 1 = 22. */
 static __attribute__((noinline)) void ws2812_send24(uintptr_t set_reg, uint32_t mask, uint32_t grb)
 {
-	uint32_t data = grb << 8; /* bit 23 queda en el bit 31 */
+	uint32_t data = grb << 8;
 	uint32_t n = 24;
 
 	__asm volatile(
 		".syntax unified\n"
 		"1:\n"
-		"str  %[m], [%[r], #0]\n"        /* sube la linea */
-		"lsls %[d], %[d], #1\n"          /* C = bit a enviar */
+		"str  %[m], [%[r], #0]\n"
+		"lsls %[d], %[d], #1\n"
 		"bcs  2f\n"
-		/* ---- bit 0: T0H = 4 + 7 = 11 ciclos, periodo 40 ---- */
 		NOPS(7)
-		"str  %[m], [%[r], #16]\n"       /* baja la linea */
+		"str  %[m], [%[r], #16]\n"
 		NOPS(22)
 		"b    3f\n"
-		/* ---- bit 1: T1H = 5 + 17 = 22 ciclos, periodo 40 ---- */
 		"2:\n"
 		NOPS(17)
 		"str  %[m], [%[r], #16]\n"
@@ -64,7 +49,6 @@ static void ws2812_set(uint8_t r, uint8_t g, uint8_t b)
 	irq_unlock(key);
 }
 
-/* Rueda de color: 0..255 -> RGB */
 static void wheel(uint8_t p, uint8_t *r, uint8_t *g, uint8_t *b)
 {
 	if (p < 85) {
@@ -85,7 +69,6 @@ int main(void)
 	}
 	gpio_pin_configure_dt(&ws, GPIO_OUTPUT_INACTIVE);
 
-	/* Rotacion continua de color (arcoiris), brillo 1/8 */
 	for (uint8_t h = 0;; h++) {
 		uint8_t r, g, b;
 

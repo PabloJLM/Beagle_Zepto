@@ -52,7 +52,6 @@ void (*const vector_table[])(void) = {
 	Reset_Handler, NMI_Handler, HardFault_Handler,
 	0, 0, 0, 0, 0, 0, 0,
 	SVC_Handler, 0, 0, PendSV_Handler, SysTick_Handler,
-	/* IRQ0..IRQ31 */
 	GROUP0_IRQHandler, GROUP1_IRQHandler, TIMG8_IRQHandler, 0,
 	ADC0_IRQHandler, 0, 0, 0,
 	0, SPI0_IRQHandler, 0, 0,

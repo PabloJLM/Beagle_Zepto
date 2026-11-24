@@ -3,7 +3,6 @@
 
 #define SLEEP_MS 500
 
-/* Requiere el alias "led0" en el devicetree de la placa */
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(DT_ALIAS(led0), gpios);
 
 int main(void)
