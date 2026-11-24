@@ -1,0 +1,42 @@
+# --- Zephyr / CMake / west ---
+build/
+build-*/
+.west/
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+compile_commands.json
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# --- Logs de flasheo ---
+ocd.log
+*.log
+
+# --- KiCad ---
+*-backups/
+*.kicad_prl
+fp-info-cache
+_autosave-*
+*-bak
+*.bak
+*.lck
+~*.lck
+*.kicad_sch-bak
+*.kicad_pcb-bak
+#auto_saved_files#
+*.pdf.tmp
+# (los gerbers/ y hardware/images se versionan a proposito)
+
+# --- Editores / SO ---
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+.directory
