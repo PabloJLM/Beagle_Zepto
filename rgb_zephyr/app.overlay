@@ -1,0 +1,6 @@
+/* LED RGB D3 (ARGB-2020 tipo WS2812): linea de datos en PA15 */
+/ {
+	zephyr,user {
+		ws2812-gpios = <&gpioa 15 GPIO_ACTIVE_HIGH>;
+	};
+};
